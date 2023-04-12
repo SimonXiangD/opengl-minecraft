@@ -13,6 +13,8 @@ float rand01() {
 	return (rand() % 255) / 255.0f;
 }
 
+
+
 // 第一个键盘交互键
 void myKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -47,7 +49,7 @@ void fullScreenCallBack(GLFWwindow* window, int key, int scancode, int action, i
 
 int main() {
 	
-	int width = 800, height = 800;
+	int width = 1280, height = 720;
 	const char* windowsName = "Journey starts from a single step";
 	
 	// 初始化
@@ -171,7 +173,7 @@ int main() {
 		glUseProgram(shaderProgram);
 		if (keyPressedData['A']) {
 			for (int i = 0; i < 9; i++) {
-				vertices.push_back(rand01());
+				vertices.push_back(2*rand01()-1.0);
 			}
 			keyPressedData['A'] = false;
 			// glBindBuffer(GL_ARRAY_BUFFER, VBO);
