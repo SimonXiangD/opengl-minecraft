@@ -155,6 +155,15 @@ int main() {
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//glBindVertexArray(0);
 
+	std::vector<unsigned int> indices = {
+		0,1,2,
+		// 3,4,5
+	};
+
+	GLuint EBO;
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
 
 
 
@@ -172,15 +181,25 @@ int main() {
 		
 		glUseProgram(shaderProgram);
 		if (keyPressedData['A']) {
-			for (int i = 0; i < 9; i++) {
+			/*for (int i = 0; i < 9; i++) {
 				vertices.push_back(2*rand01()-1.0);
-			}
+				// generate 9 points for glDrawArrays
+			}*/
 			keyPressedData['A'] = false;
-			// glBindBuffer(GL_ARRAY_BUFFER, VBO);
+			// // glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+			vertices.push_back(2 * rand01() - 1.0);
+			vertices.push_back(rand01());
+			vertices.push_back(2 * rand01() - 1.0);
+			indices.push_back(0);
+			indices.push_back(1);
+			indices.push_back(vertices.size() / vertexSize -1);
+			// // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), &indices[0], GL_STATIC_DRAW);
 		}
 		glBindVertexArray(VAO);
-		glDrawArrays(GL_TRIANGLES, 0, vertices.size() / vertexSize);
+		// glDrawArrays(GL_TRIANGLES, 0, vertices.size() / vertexSize);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
 
 		glfwPollEvents();
