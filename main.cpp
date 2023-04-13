@@ -6,11 +6,14 @@
 
 OpenGLWindow* fullScreenMode = nullptr;
 
-bool keyPressedData[1000] = {};
+float keyPressedData[1000] = {};
 
 using std::endl;
 using std::cin;
 using std::cout;
+
+using glm::mat4;
+using glm::vec3;
 
 
 // 返回0-1之间的随机数
@@ -36,7 +39,16 @@ void myKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mo
 		fullScreenMode->SetFullScreen();
 	}
 	if (key == GLFW_KEY_A && action == GLFW_PRESS) {
-		keyPressedData['A'] = true;
+		keyPressedData['A'] += 0.1;
+	}
+	if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+		keyPressedData['S'] += 0.1;
+	}
+	if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+		keyPressedData['D'] += 0.1;
+	}
+	if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+		keyPressedData['W'] += 0.1;
 	}
 		
 }
@@ -86,6 +98,63 @@ int main() {
 		-0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // bottom left
 		-0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // top left 
 	};
+
+	float vertices3[] = {
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+	 0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	 0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+	-0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+	-0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
+	glm::vec3 cubePositions[] = {
+	glm::vec3(0.0f,  0.0f,  0.0f),
+	glm::vec3(2.0f,  5.0f, -15.0f),
+	glm::vec3(-1.5f, -2.2f, -2.5f),
+	glm::vec3(-3.8f, -2.0f, -12.3f),
+	glm::vec3(2.4f, -0.4f, -3.5f),
+	glm::vec3(-1.7f,  3.0f, -7.5f),
+	glm::vec3(1.3f, -2.0f, -2.5f),
+	glm::vec3(1.5f,  2.0f, -2.5f),
+	glm::vec3(1.5f,  0.2f, -1.5f),
+	glm::vec3(-1.3f,  1.0f, -1.5f)
+	};
+
 
 	// 创建窗口
 	GLFWwindow* window = glfwCreateWindow(
@@ -139,15 +208,13 @@ int main() {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	// 注意，第一个数字是数组的byte长度信息，然后是指针地址
 	// sizeof 返回数据类型的大小，比如sizeof(vertices)就会返回std::vector的size
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices3), vertices3, GL_STATIC_DRAW);
 
 	// pos, color, texcoord
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6*sizeof(float)));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
 
 	// bind both VAO and VBO to 0 so we dont accidentally modify them
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -159,10 +226,10 @@ int main() {
 		// 3,4,5
 	};
 
-	GLuint EBO;
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
+	//GLuint EBO;
+	//glGenBuffers(1, &EBO);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), &indices[0], GL_STATIC_DRAW);
 
 
 	int texW, texH, nrChannels;
@@ -202,7 +269,6 @@ int main() {
 	// link all shaders into shader program
 	glLinkProgram(shaderProgram);
 
-
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
@@ -211,10 +277,40 @@ int main() {
 
 
 
+	vec3 eyePos = vec3(0.0, 0.0, 0.0);
+	vec3 cameraTarget = vec3(0.0, 0.0, 0.0);
+	vec3 eyeDir;
+	vec3 upDir(0.0, 1.0, 0.0);
+	vec3 rightDir;
+
 	// 不关闭的时候就保持窗口开启
 	while (!glfwWindowShouldClose(window)) {
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, texture);
+
+		//glm::mat4 trans = glm::mat4(1.0f);
+		//trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+		//trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0, 0.0, 1.0));
+		
+
+		//for (int i = 0; i < 4; i++) {
+		//	for (int j = 0; j < 4; j++) {
+		//		cout << trans[i][j] << " ";
+		//	}
+		//	cout << endl;
+		//}
+
+		mat4 model = mat4(1.0f);
+		eyePos = vec3(keyPressedData['D'] - keyPressedData['A'], 0.0, keyPressedData['W'] - keyPressedData['S']);
+		mat4 view = glm::lookAt(eyePos, cameraTarget, upDir);
+		//view = mat4(1.0f);
+		//eyeDir = glm::normalize(cameraTarget - eyePos);
+		//rightDir = glm::cross(eyeDir, upDir);
+		mat4 projection = mat4(1.0f);
+		
+
+		unsigned int transformLoc = glGetUniformLocation(shaderProgram, "mvp");
+		glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection*view*model));
 
 		glClear(GL_COLOR_BUFFER_BIT);
 		
@@ -226,7 +322,7 @@ int main() {
 		// glDrawArrays(GL_TRIANGLES, 0, vertices.size() / vertexSize);
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glfwSwapBuffers(window);
-
+		
 		glfwPollEvents();
 	}
 	
